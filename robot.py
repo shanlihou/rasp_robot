@@ -1,4 +1,4 @@
-from types import board
+from user_type import board
 
 
 
