@@ -25,7 +25,7 @@ class Board(object):
         self.oled.show()
 
         self.image = self.get_image(0)
-        self.image_list = self._load_image("a.gif")
+        self.image_list = self._load_image("b.gif")
         self.iter = self._get_image()
 
     def _load_image(self, path):
