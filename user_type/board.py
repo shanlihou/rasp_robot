@@ -24,47 +24,37 @@ class Board(object):
         self.oled.fill(0)
         self.oled.show()
 
-# 创建一个空白的图像
-# 确保用“1”表示 1bit 的颜色
+        self.image = self.get_image(0)
+
+    def get_image(self, off):
         image = Image.new("1", (self.oled.width, self.oled.height))
 
-# 获取绘制对象来绘制图像
         draw = ImageDraw.Draw(image)
 
-# 绘制一个白色的背景
-        draw.rectangle((0, 0, self.oled.width, self.oled.height), outline=255, fill=255)
+        draw.rectangle((0, 0, self.oled.width, self.oled.height), outline=255, fill=0)
 
-# 绘制一个小的内边框
-        draw.rectangle(
-            (
-                const.BORDER, 
-                const.BORDER, 
-                self.oled.width - const.BORDER - 1, 
-                self.oled.height - const.BORDER - 1
-            ), 
-            fill=0, 
-            outline=0)
-
-# 加载默认样式
         font = ImageFont.load_default()
-# 绘制一些文字
         text = "Hello World!"
-#(font_width, font_height) = font.getsize(text)
         draw.text(
-            (0, 0),
+            (off, 0),
             text,
             font=font,
             fill=255,
         )
-
-        self.image = image
+        return image
 
     def clear(self):
         self.oled.fill(0)
         self.oled.show()
 
     def run_once(self):
-        if self.step % 30 == 0:
+        _step_len = 2
+        _step = int(self.step // _step_len)
+        if self.step % _step_len == 0:
+            print(_step)
+            _off = _step % 40
+            print(_off)
+            self.image = self.get_image(_off)
             self.oled.image(self.image)
             self.oled.show()
 
