@@ -35,6 +35,8 @@ class Board(object):
             frame = frame.convert("1")
 
             frames.append(frame)
+            print(id(frame))
+            print(len(frames))
 
         return frames
 
