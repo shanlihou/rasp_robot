@@ -32,6 +32,8 @@ class Board(object):
         frames = []
         for frame in ImageSequence.Iterator(img):
             frame = frame.resize((128, 64))
+            frame = frame.convert("1")
+
             frames.append(frame)
 
         return frames
