@@ -71,7 +71,7 @@ class Board(object):
         _iter = _get_image()
 
         if self.step % _step_len == 0:
-            print(_step)
+            print(len(self.image_list))
             _img = next(_iter)
             print(id(_img))
             self.oled.image(_img)
