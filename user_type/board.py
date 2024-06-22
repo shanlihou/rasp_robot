@@ -26,6 +26,7 @@ class Board(object):
 
         self.image = self.get_image(0)
         self.image_list = self._load_image("a.gif")
+        self.iter = self._get_image()
 
     def _load_image(self, path):
         img = Image.open(path)
@@ -61,22 +62,18 @@ class Board(object):
         self.oled.fill(0)
         self.oled.show()
 
+    def _get_image(self):
+        while 1:
+            for i, _img in enumerate(self.image_list):
+                print('will yield', i, id(_img))
+                yield _img
+
     def run_once(self):
         _step_len = 2
         _step = int(self.step // _step_len)
-        
-        def _get_image():
-            while 1:
-                for i, _img in enumerate(self.image_list):
-                    print('will yield', i, id(_img))
-                    yield _img
-
-        _iter = _get_image()
 
         if self.step % _step_len == 0:
-            print(len(self.image_list))
-            _img = next(_iter)
-            print(id(_img))
+            _img = next(self.iter)
             self.oled.image(_img)
             self.oled.show()
 
