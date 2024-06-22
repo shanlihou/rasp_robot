@@ -67,9 +67,9 @@ class Board(object):
         
         def _get_image():
             while 1:
-                for i in self.image_list:
-                    print('will yield')
-                    yield i
+                for i, _img in enumerate(self.image_list):
+                    print('will yield', i, id(_img))
+                    yield _img
 
         _iter = _get_image()
 
