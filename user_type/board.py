@@ -72,7 +72,9 @@ class Board(object):
 
         if self.step % _step_len == 0:
             print(_step)
-            self.oled.image(next(_iter))
+            _img = next(_iter)
+            print(id(_img))
+            self.oled.image(_img)
             self.oled.show()
 
     def run(self):
