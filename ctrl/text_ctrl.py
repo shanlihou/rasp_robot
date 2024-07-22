@@ -1,4 +1,5 @@
 import os
+import re
 from PIL import Image, ImageDraw, ImageFont, ImageSequence
 
 class TextController(object):
@@ -25,9 +26,12 @@ class TextController(object):
         return image
 
     def get_ip_info(self):
+        _pat = re.compile(r'inet\s+([0-9.]+)\s+netmask\s+([0-9.]+)\s+broadcast\s+([0-9.]+)')
         with os.popen('ifconfig') as f:
             _data = f.read()
             print(_data)
+            _find = _pat.findall(_data)
+            print(_find)
             return _data
 
     def next_frame(self):
