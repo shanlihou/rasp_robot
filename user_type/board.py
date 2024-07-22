@@ -4,6 +4,8 @@ import busio
 import digitalio
 import time
 
+from ctrl import gif_ctrl
+from ctrl import text_ctrl
 from PIL import Image, ImageDraw, ImageFont, ImageSequence
 
 from common import const
@@ -21,61 +23,17 @@ class Board(object):
 
         self.oled = adafruit_ssd1306.SSD1306_SPI(const.WIDTH, const.HEIGHT, spi, dc_pin, reset_pin, cs_pin)
 # 初始化 清除屏幕信息
-        self.oled.fill(0)
-        self.oled.show()
+        self.clear()
 
-        self.image = self.get_image(0)
-        self.image_list = self._load_image("b.gif")
-        self.iter = self._get_image()
-
-    def _load_image(self, path):
-        img = Image.open(path)
-        frames = []
-        for frame in ImageSequence.Iterator(img):
-            frame = frame.resize((128, 64))
-            frame = frame.convert("1")
-
-            frames.append(frame)
-            print(id(frame))
-            print(len(frames))
-
-        return frames
-
-    def get_image(self, off):
-        image = Image.new("1", (self.oled.width, self.oled.height))
-
-        draw = ImageDraw.Draw(image)
-
-        draw.rectangle((0, 0, self.oled.width, self.oled.height), outline=255, fill=0)
-
-        font = ImageFont.load_default()
-        text = "Hello World!"
-        draw.text(
-            (off, 0),
-            text,
-            font=font,
-            fill=255,
-        )
-        return image
+        self._ctrl = text_ctrl.TextController(self.oled.width, self.oled.height)
 
     def clear(self):
         self.oled.fill(0)
         self.oled.show()
 
-    def _get_image(self):
-        while 1:
-            for i, _img in enumerate(self.image_list):
-                print('will yield', i, id(_img))
-                yield _img
-
     def run_once(self):
-        _step_len = 2
-        _step = int(self.step // _step_len)
-
-        if self.step % _step_len == 0:
-            _img = next(self.iter)
-            self.oled.image(_img)
-            self.oled.show()
+        self.oled.image(self._ctrl.next_frame())
+        self.oled.show()
 
     def run(self):
         while True:
