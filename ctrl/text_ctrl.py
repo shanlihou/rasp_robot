@@ -25,7 +25,7 @@ class TextController(object):
         return image
 
     def get_ip_info(self):
-        with os.popen('ipconfig') as f:
+        with os.popen('ifconfig') as f:
             _data = f.read()
             print(_data)
             return _data
