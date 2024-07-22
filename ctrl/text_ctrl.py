@@ -21,7 +21,7 @@ class TextController(object):
         if _ips:
             for i, _ip in enumerate(_ips):
                 draw.text(
-                    (i * 10, 0),
+                    ((i + 1) * 10, 0),
                     _ip[0],
                     font=self.font,
                     fill=255,
